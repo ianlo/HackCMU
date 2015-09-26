@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private HollowCircle hollowCircle;
     private TextView goTV;
     private int interval = 0;
+    private int countdown = 0;
     private int greenInterval = 11;
     private TextView timeTV;
     private TextView untilNextTV;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         CountdownRequest cr = new CountdownRequest(this);
         cr.execute();
     }
+
+    public
 
     public void startLightOff(int seconds) {
         hollowCircle.setGreen(false);
@@ -153,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void setInterval(int interval) {
         this.interval = interval;
+    }
+    public void setCountdown(int countdown) {
+        this.countdown = countdown;
     }
 
     public int getGreenInterval() {

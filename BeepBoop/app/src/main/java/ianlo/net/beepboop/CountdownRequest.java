@@ -89,6 +89,7 @@ public class CountdownRequest extends AsyncTask {
             }
 
         }
+
         pd.dismiss();
     }
 }
