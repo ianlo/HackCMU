@@ -43,7 +43,7 @@ public class CountdownRequest extends AsyncTask {
         HttpResponse response;
         String responseString = null;
         try {
-            response = httpclient.execute(new HttpGet("http://www.californiaclarks.com/beepboop/api.php?do=countdown"));
+            response = httpclient.execute(new HttpGet("http://www.cmubeepboop.com/api.php?do=countdown"));
             StatusLine statusLine = response.getStatusLine();
             if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                 ByteArrayOutputStream out = new ByteArrayOutputStream();

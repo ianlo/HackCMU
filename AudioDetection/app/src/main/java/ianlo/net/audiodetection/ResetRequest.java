@@ -46,7 +46,7 @@ public class ResetRequest extends AsyncTask {
     protected Object doInBackground(Object[] params) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://www.californiaclarks.com/beepboop/api.php?do=reset");
+        HttpPost httppost = new HttpPost("http://www.cmubeepboop.com/api.php?do=reset");
 
         try {
             long time = Calendar.getInstance().getTimeInMillis()/1000;

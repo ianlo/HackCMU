@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private HollowCircle hollowCircle;
     private TextView goTV;
     private int interval = 0;
-    private int greenInterval = 32;
+    private int greenInterval = 11;
     private TextView timeTV;
     private TextView untilNextTV;
     private TextView lightGreenTV;
