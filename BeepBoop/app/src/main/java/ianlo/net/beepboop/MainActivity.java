@@ -1,5 +1,9 @@
 package ianlo.net.beepboop;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,11 +13,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ianlo.net.visuals.CircleAngleAnimation;
 import ianlo.net.visuals.HollowCircle;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
     private HollowCircle hollowCircle;
     private TextView goTV;
     private int interval = 0;
@@ -22,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView timeTV;
     private TextView untilNextTV;
     private TextView lightGreenTV;
+    public static final double MAX_SPEED = 2.5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        this.onLocationChanged(null);
 
         hollowCircle = (HollowCircle) findViewById(R.id.circle);
         timeTV = (TextView) findViewById(R.id.timeTV);
@@ -44,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
         CountdownRequest cr = new CountdownRequest(this);
         cr.execute();
     }
-
-    public
 
     public void startLightOff(int seconds) {
         hollowCircle.setGreen(false);
@@ -168,5 +176,49 @@ public class MainActivity extends AppCompatActivity {
 
     public void setGreenInterval(int greenInterval) {
         this.greenInterval = greenInterval;
+    }
+
+    public float getIdealSpeed(Location location) {
+        float d = getDistanceToLight(location);
+        float t = this.countdown;
+        while (d/t >= MAX_SPEED){
+            t = t + this.interval;
+        }
+        return (d/t);
+
+    }
+
+    public float getDistanceToLight(Location location){
+
+        Location light = new Location("manual");
+        light.setLatitude(40.444638);
+        light.setLongitude(-79.943105);
+
+        double d = Math.pow(Math.pow((light.getLatitude() - location.getLatitude()), 2) + Math.pow((light.getLongitude() - location.getLongitude()),2), 1/2);
+        return (float) d;
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+        float speed = 0F;
+        if (null != location) {
+            speed = location.getSpeed();
+        }
+        float idealSpeed = getIdealSpeed(location);
+        float adj = idealSpeed - speed;
+        Toast.makeText(this, adj<0?"SLOW DOWN":"SPEED UP", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
     }
 }

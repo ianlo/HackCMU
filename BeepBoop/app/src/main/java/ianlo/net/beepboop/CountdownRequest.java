@@ -81,6 +81,7 @@ public class CountdownRequest extends AsyncTask {
         super.onPostExecute(o);
         if(interval != 0 && countdown != 0) {
             context.setInterval(interval);
+            context.setCountdown(countdown);
             if (countdown > interval - context.getGreenInterval()) {
                 context.startLightOn(countdown - (interval - context.getGreenInterval()));
             }
