@@ -4,6 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="animate">Animate</string>
-    <string name="go">Cross</string>
+    <string name="go">Beep\nBoop</string>
     <string name="time">Time</string>
+    <string name="untilNext">until next crossing.</string>
+    <string name="lightGreen">The light is green.</string>
+    <string name="noData">No data available</string>
 </resources>

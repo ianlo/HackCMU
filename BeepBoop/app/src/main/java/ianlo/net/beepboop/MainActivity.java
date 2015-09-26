@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import ianlo.net.visuals.CircleAngleAnimation;
@@ -18,9 +15,12 @@ import ianlo.net.visuals.HollowCircle;
 
 public class MainActivity extends AppCompatActivity {
     private HollowCircle hollowCircle;
-    private ImageView greenCircle;
     private TextView goTV;
-    private long startTime = 0;
+    private int interval = 0;
+    private int greenInterval = 32;
+    private TextView timeTV;
+    private TextView untilNextTV;
+    private TextView lightGreenTV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,34 +30,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         hollowCircle = (HollowCircle) findViewById(R.id.circle);
-        hollowCircle.setTextView((TextView) findViewById(R.id.timeTV));
-        greenCircle = (ImageView) findViewById(R.id.greenCircle);
+        timeTV = (TextView) findViewById(R.id.timeTV);
+        hollowCircle.setTextView(timeTV);
         goTV = (TextView) findViewById(R.id.goTV);
+        untilNextTV = (TextView) findViewById(R.id.untilNextTV);
+        lightGreenTV = (TextView) findViewById(R.id.lightGreenTV);
+    }
 
-        startLightOff(60);
-
-        Button b = (Button) findViewById(R.id.animateButton);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startLightOff(3);
-            }
-        });
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CountdownRequest cr = new CountdownRequest(this);
+        cr.execute();
     }
 
     public void startLightOff(int seconds) {
         hollowCircle.setGreen(false);
         hollowCircle.restart(seconds);
         hollowCircle.setAlpha(1);
-        hollowCircle.setAngle(seconds * 6);
+        hollowCircle.setAngle((int) (seconds / (double) (interval - greenInterval) * 360));
 
         CircleAngleAnimation animation = new CircleAngleAnimation(hollowCircle, 0);
         animation.setDuration(seconds * 1000);
         animation.setInterpolator(new LinearInterpolator());
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setStartOffset(seconds * 1000);
-        fadeOut.setDuration(500);
+
 
         Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setStartOffset(seconds * 1000 - 1000);
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                startLightOn(8);
+                startLightOn(greenInterval);
             }
 
             @Override
@@ -82,12 +78,22 @@ public class MainActivity extends AppCompatActivity {
         hollowCircle.startAnimation(animationSet);
         AnimationSet as2 = new AnimationSet(true);
         as2.addAnimation(fadeIn);
-        greenCircle.setAlpha(0f);
         goTV.startAnimation(as2);
+        lightGreenTV.startAnimation(as2);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setStartOffset(seconds * 1000-1000);
+        fadeOut.setDuration(1000);
+        AnimationSet as3 = new AnimationSet(true);
+        as3.addAnimation(fadeOut);
+        timeTV.startAnimation(as3);
+        untilNextTV.startAnimation(as3);
     }
 
     public void startLightOn(int seconds) {
         hollowCircle.setAlpha(1);
+        timeTV.setText(interval - greenInterval + "");
+
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setStartOffset(seconds * 1000 - 3000);
         fadeOut.setDuration(3000);
@@ -99,19 +105,31 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                startLightOff(60);
+                startLightOff(interval - greenInterval);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
         });
+
         AnimationSet as2 = new AnimationSet(true);
         as2.addAnimation(fadeOut);
         hollowCircle.startAnimation(as2);
         goTV.startAnimation(as2);
-    }
+        lightGreenTV.startAnimation(as2);
 
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setStartOffset(seconds * 1000 - 3000);
+        fadeIn.setDuration(3000);
+        AnimationSet as3 = new AnimationSet(true);
+        as3.addAnimation(fadeIn);
+        timeTV.startAnimation(as3);
+        untilNextTV.startAnimation(as3);
+    }
+    public void handleError() {
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -132,5 +150,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void setInterval(int interval) {
+        this.interval = interval;
+    }
+
+    public int getGreenInterval() {
+        return greenInterval;
+    }
+
+    public void setGreenInterval(int greenInterval) {
+        this.greenInterval = greenInterval;
     }
 }

@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < minSize; i++) {
                     average_buffer += (int) Math.sqrt((float) buffer[i] * buffer[i]);
                 }
+                if(average_buffer > 1000000) {
+                    ResetRequest rr = new ResetRequest(MainActivity.this);
+                    rr.execute();
+                }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-        }, 0, 100);
+        }, 0, 1000);
     }
 
     @Override

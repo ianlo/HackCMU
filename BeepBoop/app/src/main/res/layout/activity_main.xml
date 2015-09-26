@@ -24,7 +24,10 @@
             android:textColor="#ffffff"
             android:textSize="30pt"
             android:text="@string/go"
+            android:gravity="center"
             android:id="@+id/goTV"/>
+
+
         <ianlo.net.visuals.HollowCircle
             android:id="@+id/circle"
 
@@ -32,15 +35,6 @@
             android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
             />
-        <ImageView
-            android:layout_margin="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/greenCircle"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/green_circle"
-            android:adjustViewBounds="true" />
 
         </RelativeLayout>
 
@@ -54,13 +48,28 @@
         android:textColor="#ffffff"
 
         />
-    <Button
-        android:id="@+id/animateButton"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/animate"
-        android:layout_below="@id/timeTV"/>
+        android:gravity="center"
+        android:layout_below="@+id/timeTV"
+        android:textColor="#ffffff"
+        android:textSize="15pt"
+        android:text="@string/untilNext"
+        android:id="@+id/untilNextTV"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_below="@+id/timeTV"
+        android:textColor="#ffffff"
+        android:textSize="15pt"
+        android:text="@string/lightGreen"
+        android:id="@+id/lightGreenTV"
+        />
 
 
 </RelativeLayout>
