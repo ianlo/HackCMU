@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startLightOn(int seconds) {
         hollowCircle.setAlpha(1);
+        hollowCircle.setAngle(0);
         timeTV.setText(interval - greenInterval + "");
 
         Animation fadeOut = new AlphaAnimation(1, 0);
