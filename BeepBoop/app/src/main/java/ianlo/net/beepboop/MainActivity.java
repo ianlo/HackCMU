@@ -20,7 +20,7 @@ import ianlo.net.visuals.HollowCircle;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     private HollowCircle hollowCircle;
-    private TextView goTV;
+    private TextView goTV, debug;
     private int interval = 0;
     private int countdown = 0;
     private int greenInterval = 11;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         this.onLocationChanged(null);
 
         hollowCircle = (HollowCircle) findViewById(R.id.circle);
+        debug = (TextView) findViewById(R.id.debugTV);
         timeTV = (TextView) findViewById(R.id.timeTV);
         hollowCircle.setTextView(timeTV);
         goTV = (TextView) findViewById(R.id.goTV);
@@ -190,13 +191,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     public float getDistanceToLight(Location location){
 
-        Location light = new Location("manual");
-        light.setLatitude(40.444638);
-        light.setLongitude(-79.943105);
+        float light_lat = (float) 40.444638;
+        float light_lng = (float) -79.943105;
 
-        double d = Math.pow(Math.pow((light.getLatitude() - location.getLatitude()), 2) + Math.pow((light.getLongitude() - location.getLongitude()),2), 1/2);
+        double d = Math.pow(Math.pow((light_lat - location.getLatitude()), 2) + Math.pow((light_lng - location.getLongitude()),2), 1/2);
+        debug.setText(String.valueOf(d));
         return (float) d;
     }
+
     @Override
     public void onLocationChanged(Location location) {
         float speed = 0F;
