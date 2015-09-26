@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="primary" type="color">#00c973</item>
+    <item name="primary_dark" type="color">#00da8f</item>
+    <!--<item name="background" type="color">#00e667</item>-->
+    <item name="background" type="color">#0ff07a</item>
+
+    <item name="circle" type="color">#0ff07a</item>
+
+</resources>
